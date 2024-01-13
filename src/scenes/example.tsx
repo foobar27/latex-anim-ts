@@ -45,17 +45,17 @@ function setAlpha(color: Color, alpha: number) {
   return new Color({ r: color.rgb()[0], g: color.rgb()[1], b: color.rgb()[2], a: alpha });
 }
 
-export class Glyph extends Node {
+export class Glyph extends Path {
   @colorSignal()
   public declare readonly color: ColorSignal<this>;
 
   @signal()
   public declare readonly data: SimpleSignal<string, this>;
 
-  @vector2Signal()
-  public declare readonly position: Vector2Signal<this>;
+  // @vector2Signal()
+  // public declare readonly position: Vector2Signal<this>;
 
-  private readonly path = createRef<Path>();
+  // private readonly path = createRef<Path>();
 
   public constructor(props?: GlyphProps) {
     super({
@@ -63,7 +63,7 @@ export class Glyph extends Node {
     });
     this.add(
       <Path
-        ref={this.path}
+        //ref={this.path}
         start={0.0}
         end={0.0}
         stroke={this.color}
@@ -77,10 +77,10 @@ export class Glyph extends Node {
 
   public * fadeIn(duration: number) {
     yield* tween(1 / 2 * duration, value => {
-      this.path().end(easeInOutCubic(value));
+      this.end(easeInOutCubic(value));
     });
     yield* tween(1 / 2 * duration, value => {
-      this.path().fill(setAlpha(this.color(), easeInOutCubic(value, value)));
+      this.fill(setAlpha(this.color(), easeInOutCubic(value, value)));
     });
   }
 
@@ -107,97 +107,101 @@ export default makeScene2D(function* (view) {
   const terminal13a = createRef<Glyph>();
   const terminal13b = createRef<Glyph>();
   const terminal14 = createRef<Glyph>();
-  view.add(
-    <Path
-      ref={terminal2}
-      stroke={"rgb(56.001282%,82.843018%,35.496521%)"}
-      fill={"rgb(56.001282%,82.843018%,35.496521%)"}
-      data={glyphT}
-      position={[10, 10]}
-    />
-  );
-  view.add(
-    <Path
-      ref={terminal3}
-      stroke={"rgb(56.001282%,82.843018%,35.496521%)"}
-      fill={"rgb(56.001282%,82.843018%,35.496521%)"}
-      data={glyphPrime}
-      position={[138.578 - 131.786 + 10, 78.042 - 81.658 + 10]}
-    />
-
-  );
   // view.add(
   //   <Rect
-  //     scale={1}
-  //     position={[-1000 / 6, -800 / 6]}
+  //     position={[+10, -10]}
   //   >
-  //     <Glyph
-  //       ref={terminal1}
-  //       color={"rgb(96.42334%,52.000427%,78.35083%)"}
-  //       data={glyphT}
-  //       position={[68.815, 81.658]}
-  //     />
   //     <Glyph
   //       ref={terminal2}
   //       color={"rgb(56.001282%,82.843018%,35.496521%)"}
+  //       //fill={"rgb(56.001282%,82.843018%,35.496521%)"}
   //       data={glyphT}
-  //       position={[131.786, 81.658]}
+  //       position={[10, 10]}
   //     />
   //     <Glyph
   //       ref={terminal3}
-  //       color={"rgb(56.001282%,82.843018%, 35.496521%)"}
-  //       data={glyphPrime}
-  //       position={[138.578, 78.042]}
-  //     />
-  //     <Glyph
-  //       ref={terminal6}
   //       color={"rgb(56.001282%,82.843018%,35.496521%)"}
-  //       data={glyphF}
-  //       position={[101.289, 64.653]}
-  //     />
-  //     <Glyph
-  //       ref={terminal9}
-  //       color={"rgb(100%,100%,100%)"}
-  //       data={glyphF}
-  //       position={[100.44, 39.389]}
-  //     />
-  //     <Glyph
-  //       ref={terminal10}
-  //       color={"rgb(100%,100%,100%)"}
-  //       data={glyphPrime2}
-  //       position={[104.731, 36.858]}
-  //     />
-  //     <Glyph
-  //       ref={terminal13a}
-  //       color={"rgb(96.42334%,52.000427%,78.35083%)"}
-  //       data={glyph4p1}
-  //       position={[2.414, 80.425]}
-  //     />
-  //     <Glyph
-  //       ref={terminal13b}
-  //       color={"rgb(96.42334%,52.000427%,78.35083%)"}
-  //       data={glyph4p2}
-  //       position={[4.725117, 80.425]}
-  //     />
-  //     <Glyph
-  //       ref={terminal14}
-  //       color={"rgb(96.42334%,52.000427%,78.35083%)"}
-  //       data={glyph5p1}
-  //       position={[9.18, 81.482]}
+  //       //fill={"rgb(56.001282%,82.843018%,35.496521%)"}
+  //       data={glyphPrime}
+  //       position={[138.578 - 131.786 + 10, 78.042 - 81.658 + 10]}
   //     />
 
-  //   </Rect>,
+
+  //   </Rect>
+
   // );
+  view.add(
+    <Rect
+      scale={1}
+      position={[-1000 / 6, -800 / 6]}
+    >
+      <Glyph
+        ref={terminal1}
+        color={"rgb(96.42334%,52.000427%,78.35083%)"}
+        data={glyphT}
+        position={[68.815, 81.658]}
+      />
+      <Glyph
+        ref={terminal2}
+        color={"rgb(56.001282%,82.843018%,35.496521%)"}
+        data={glyphT}
+        position={[131.786, 81.658]}
+      />
+      <Glyph
+        ref={terminal3}
+        color={"rgb(56.001282%,82.843018%, 35.496521%)"}
+        data={glyphPrime}
+        position={[138.578, 78.042]}
+      />
+      <Glyph
+        ref={terminal6}
+        color={"rgb(56.001282%,82.843018%,35.496521%)"}
+        data={glyphF}
+        position={[101.289, 64.653]}
+      />
+      <Glyph
+        ref={terminal9}
+        color={"rgb(100%,100%,100%)"}
+        data={glyphF}
+        position={[100.44, 39.389]}
+      />
+      <Glyph
+        ref={terminal10}
+        color={"rgb(100%,100%,100%)"}
+        data={glyphPrime2}
+        position={[104.731, 36.858]}
+      />
+      <Glyph
+        ref={terminal13a}
+        color={"rgb(96.42334%,52.000427%,78.35083%)"}
+        data={glyph4p1}
+        position={[2.414, 80.425]}
+      />
+      <Glyph
+        ref={terminal13b}
+        color={"rgb(96.42334%,52.000427%,78.35083%)"}
+        data={glyph4p2}
+        position={[4.725117, 80.425]}
+      />
+      <Glyph
+        ref={terminal14}
+        color={"rgb(96.42334%,52.000427%,78.35083%)"}
+        data={glyph5p1}
+        position={[9.18, 81.482]}
+      />
 
-  // yield* terminal1().fadeIn(1.0);
-  // yield* terminal2().fadeIn(1.0);
-  // yield* terminal3().fadeIn(1.0);
-  // yield* terminal6().fadeIn(1.0);
-  // yield* terminal9().fadeIn(1.0);
-  // yield* terminal10().fadeIn(1.0);
-  // yield* terminal13a().fadeIn(1.0);
-  // yield* terminal13b().fadeIn(1.0);
-  // yield* terminal14().fadeIn(1.0);
+    </Rect>,
+  );
+
+  yield* terminal1().fadeIn(1.0);
+  yield* terminal2().fadeIn(1.0);
+  yield* terminal3().fadeIn(1.0);
+  yield* terminal6().fadeIn(1.0);
+  yield* terminal9().fadeIn(1.0);
+  yield* terminal10().fadeIn(1.0);
+  yield* terminal13a().fadeIn(1.0);
+  yield* terminal13b().fadeIn(1.0);
+  yield* terminal14().fadeIn(1.0);
 
 
   // terminal-1.svg -X
